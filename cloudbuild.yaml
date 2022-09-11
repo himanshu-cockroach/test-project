@@ -1,0 +1,9 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/crl-in-situ-container-builder/myapp:$COMMIT_SHA', '.']
+  id: 'build-image-myapp'
+  waitFor: ['-']  # The '-' indicates that this step begins immediately.
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/crl-in-situ-container-builder/myapp:$COMMIT_SHA']
+  id: 'push-image-to-container-registry'
+  waitFor: ['build-image-myapp']
